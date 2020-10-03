@@ -37,6 +37,15 @@ window.addEventListener('load', init)
 // In case a user changes orientation / screen width
 window.addEventListener('resize', ()=> location.reload())
 
+// https://marcbruederlin.github.io/particles.js/
+window.onload = function() {
+    Particles.init({
+        selector: '.background',
+        color: ['#DA0463', '#404B69', '#DBEDF3'],
+        sizeVariations: 5
+    });
+};
+
 
 //* -------- Functions --------
 function init() {
@@ -59,7 +68,6 @@ function init() {
 
     gameLoop()
 }
-
 
 /**
  * If there is a high score, fetch it. 
@@ -120,22 +128,26 @@ function updateScore() {
     const scoreIncrement = 1 + (currDotSizeIndex + 1)
 
     score += scoreIncrement
-    scoreLabelElem.classList.add("bounce");
     scoreLabelElem.innerHTML = "Score: " + score
-    setTimeout(() =>  scoreLabelElem.classList.remove("bounce"), 2000)
+    scoreLabelElem.classList.add("shake");
+
+    setTimeout(() =>  scoreLabelElem.classList.remove("shake"), 1000)
 
 }
 
 function displaySuccessfulHit(dotXLocationBeforeMove, dotYLocationBeforeMove) {
-
-    const displaySuccessfulHitTextIndex = Math.floor(Math.random() * 4);
 
     dotHitElem.innerHTML = score
     dotHitElem.style.left = dotXLocationBeforeMove 
     dotHitElem.style.top = dotYLocationBeforeMove
     dotHitElem.style.display = 'inline'
 
-    setTimeout(() => dotHitElem.style.display = 'none', timeToDisplaySuccessfulHit)
+
+    setTimeout(() => {
+        dotHitElem.style.display = 'none'
+        dotElem.classList.remove('shake')
+
+    }, timeToDisplaySuccessfulHit)
 }
 
 function detectHit() {
