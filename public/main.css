@@ -10,27 +10,42 @@
     align-items: center;
 }
 
+#score {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column-reverse;
+    text-align: center;
+}
+
 #scoreLabel {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14pt;
+    flex-direction: column;
+    font-size: 14px;
     font-weight: bold;
     color: navy;
     height: 25px;
 }
 
-#pageTitle {
+#highScore {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: navy;
+}
+
+/* #pageTitle {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: bold;
     color: navy;
     height: 35px;
     display: none;
-}
-
+} */
 
 #startOver {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14pt;
+    font-size: 14p;
     font-weight: bold;
     color: navy;
     height: 25px;
@@ -77,9 +92,11 @@
     box-shadow: 0px 0px 10px 5px darkgrey;
 }
 
-#dot:hover {
-    background-color: rgba(153, 205, 50, 0.508);
-    box-shadow: 0px 0px 10px 10px rgba(90, 128, 0, 0.863);
+@media only screen and (min-width: 600px) {
+    #dot:hover {
+        background-color: rgba(153, 205, 50, 0.508);
+        box-shadow: 0px 0px 10px 10px rgba(90, 128, 0, 0.863);
+    }
 }
 
 #dot:active {

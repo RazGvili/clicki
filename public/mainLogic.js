@@ -18,7 +18,7 @@ const timeToDisplayDot = 2000, timeToDisplaySuccessfulHit = 1000
 
 // number of jumps for the dot
 let currIteration = 0
-const overallGameIterations = 15
+const overallGameIterations = 12
 
 // Available button sizes
 const dotSizes = [64, 32, 16]
@@ -48,7 +48,9 @@ function init() {
     areaElem = document.getElementById('gameArea')
     scoreLabelElem = document.getElementById('scoreLabel')
     progressBarWrapperElem = document.getElementById('wrapper')
-    progressBarFillElem = document.getElementById('progress-bar-fill')    
+    //progressBarFillElem = document.getElementById('progress-bar-fill')    
+
+    document.getElementById('highScore').innerHTML = getLocalHighScore()
 
     setGameAreaBounds()
 
@@ -56,6 +58,18 @@ function init() {
     document.getElementById('startOver').addEventListener('click', endGame)
 
     gameLoop()
+}
+
+
+/**
+ * If there is a high score, fetch it. 
+ */
+function getLocalHighScore() {
+
+    const highScore = localStorage.getItem('highScore') || "0"
+    console.log("init -> localStorage.getItem('highScore')", highScore)
+
+    return `Device top score: ${highScore} `
 }
 
 function setGameAreaBounds() {
@@ -69,7 +83,7 @@ function setGameAreaBounds() {
     areaElem.style.width = globalAvailableWidth + 'px'
     areaElem.style.height = globalAvailableHeight + 'px'
 
-    progressBarWrapperElem.style.width = (window.innerWidth - 150) + 'px'
+    //progressBarWrapperElem.style.width = (window.innerWidth - 150) + 'px'
 
     console.log({ globalAvailableWidth, globalAvailableHeight });
     console.log("\n");
@@ -84,7 +98,7 @@ function progressBarUpdate() {
 function gameLoop() {
     if (currIteration < overallGameIterations) {
         moveDot()
-        progressBarUpdate() 
+        //progressBarUpdate() 
 
         timer = setTimeout(gameLoop, timeToDisplayDot)
     } else {
@@ -136,6 +150,9 @@ function detectHit() {
     displaySuccessfulHit(dotXLocationBeforeMove, dotYLocationBeforeMove)
 }
 
+/**
+ * Changing dot position by randomly changing the top, left absolute location
+ */
 function moveDot() {
     setDotSize()
 
@@ -158,9 +175,24 @@ function moveDot() {
     dotElem.style.top = y + 'px'
 }
 
+/**
+ * Goal: called in the end of the game
+ * @param {*} score  number, last game score 
+ */
+function saveScoreOnLocalStorage(score) {
+
+    const scoreFromLocalStorage = localStorage.getItem('highScore')
+
+    if (scoreFromLocalStorage < score) {
+        localStorage.setItem('highScore', score);
+        console.log('%c high score saved locally! ', 'color: green');
+    }
+}
+
 function endGame() {
     clearTimeout(timer)
     dotElem.removeEventListener('click', detectHit)
+    saveScoreOnLocalStorage(score)
 
     const result = confirm('Game Over, your score: ' + score + "\nClick OK for a new game.");
 
@@ -168,7 +200,7 @@ function endGame() {
     totalPossibleScore = 0
     currIteration = 0
     scoreLabelElem.innerHTML = "Score: " + score 
-    progressBarFillElem.style.width = 0 + '%'
+    //progressBarFillElem.style.width = 0 + '%'
 
     if ( result ) {
         // the user clicked ok
